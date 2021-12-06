@@ -8,11 +8,25 @@ import { WeatherDataService } from '../weather-data.service';
   styleUrls: ['./weather-item.component.scss']
 })
 export class WeatherItemComponent implements OnInit {
-  
+  center: google.maps.LatLngLiteral;
+  options: google.maps.MapOptions = {
+    mapTypeId: 'hybrid',
+    zoomControl: false,
+    scrollwheel: false,
+    disableDoubleClickZoom: true,
+    maxZoom: 15,
+    minZoom: 8
+  };
   
   constructor(private weatherDataService: WeatherDataService) { }
 
   ngOnInit(): void {
+    navigator.geolocation.getCurrentPosition((position) => {
+      this.center = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      }
+    })
   }
 
   get weather(): Weather {
